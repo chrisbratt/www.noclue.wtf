@@ -1,1 +1,255 @@
-<h1>Hello World!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No Clue!</title>
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: linear-gradient(to right, #111, #1c1c1c);
+      color: #fff;
+      padding: 2rem;
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      justify-content: center;
+    }
+    .main-content {
+      flex: 1;
+      max-width: 600px;
+    }
+    .clue-panel {
+      width: 300px;
+    }
+    h1 {
+      font-family: 'Boldonse', sans-serif;
+      font-size: 4rem;
+      margin-bottom: 2rem;
+      color: #f5c518;
+      text-align: center;
+      text-shadow: 2px 2px #000;
+    }
+    .quote {
+      font-size: 1.8rem;
+      margin: 2rem auto 1rem;
+      font-style: italic;
+    }
+    .subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .score {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: #f5c518;
+    }
+    .submit-button {
+      background-color: #f5c518;
+      border: none;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      transition: background 0.2s;
+    }
+    .submit-button:hover {
+      background-color: #ffe670;
+    }
+    .clue-header {
+      font-size: 1.5rem;
+      font-family: 'Boldonse', sans-serif;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #f5c518;
+    }
+    .clue-slot {
+      background: #222;
+      border: 2px dashed #f5c518;
+      padding: 1rem;
+      margin: 0.5rem 0;
+      min-height: 2rem;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0.4;
+      transform: translateY(20px);
+      font-style: italic;
+    }
+    .clue-slot.revealed {
+      opacity: 1;
+      transform: translateY(0);
+      font-style: normal;
+    }
+    .input-container {
+      margin-top: 1rem;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    input[type="text"] {
+      width: 300px;
+      padding: 0.5rem;
+      font-family: inherit;
+    }
+    .autocomplete-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #222;
+      border: 1px solid #444;
+      max-height: 150px;
+      overflow-y: auto;
+      width: 100%;
+      z-index: 1000;
+      text-align: left;
+    }
+    .autocomplete-suggestion {
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    .autocomplete-suggestion:hover {
+      background: #333;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.5rem;
+      z-index: 2000;
+    }
+    .modal-content {
+      background: #222;
+      padding: 2rem;
+      border-radius: 8px;
+      border: 2px solid #f5c518;
+      box-shadow: 0 0 20px #f5c518;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-content">
+    <h1>No Clue!</h1>
+    <div class="quote" id="quote">"I'm gonna make him an offer he can't refuse."</div>
+    <div class="subtitle">What movie is this quote from?</div>
+    <div class="score" id="score">Points available: 6</div>
+    <div class="input-container" id="input-container">
+      <div style="position: relative;">
+        <input type="text" id="guess" placeholder="Type your guess..." autocomplete="off">
+        <div class="autocomplete-suggestions" id="suggestions"></div>
+      </div>
+      <button class="submit-button" id="submit-button" onclick="submitGuess()">Skip</button>
+    </div>
+  </div>
+  <div class="clue-panel">
+    <div class="clue-header">Clues</div>
+    <div class="clue-slot" id="clue-0">Clue 1 will appear here...</div>
+    <div class="clue-slot" id="clue-1">Clue 2 will appear here...</div>
+    <div class="clue-slot" id="clue-2">Clue 3 will appear here...</div>
+    <div class="clue-slot" id="clue-3">Clue 4 will appear here...</div>
+    <div class="clue-slot" id="clue-4">Clue 5 will appear here...</div>
+  </div>
+  <div class="modal" id="result-modal">
+    <div class="modal-content" id="result-message"></div>
+  </div>
+  <script>
+    const correctAnswer = "The Godfather";
+    const clues = [
+      "Released in the 1970s",
+      "Involves the Mafia",
+      "Stars Marlon Brando",
+      "Based on a novel by Mario Puzo",
+      "Directed by Francis Ford Coppola"
+    ];
+    const allMovies = [
+      "The Godfather", "Pulp Fiction", "Goodfellas", "Scarface", "Casablanca",
+      "The Shawshank Redemption", "The Dark Knight", "Forrest Gump", "Fight Club",
+      "Inception", "The Matrix", "The Lord of the Rings", "Titanic", "Gladiator"
+    ];
+    let currentClue = 0;
+    let points = 6;
+    let gameEnded = false;
+    const input = document.getElementById("guess");
+    const suggestionsBox = document.getElementById("suggestions");
+    const submitButton = document.getElementById("submit-button");
+    input.addEventListener("input", () => {
+      const query = input.value.toLowerCase();
+      suggestionsBox.innerHTML = "";
+      submitButton.textContent = query ? "Submit" : "Skip";
+      if (!query) return;
+      const matches = allMovies.filter(movie => movie.toLowerCase().includes(query)).slice(0, 10);
+      matches.forEach(match => {
+        const div = document.createElement("div");
+        div.classList.add("autocomplete-suggestion");
+        div.textContent = match;
+        div.onclick = () => {
+          input.value = match;
+          submitButton.textContent = "Submit";
+          suggestionsBox.innerHTML = "";
+        };
+        suggestionsBox.appendChild(div);
+      });
+    });
+    document.addEventListener("click", (e) => {
+      if (!suggestionsBox.contains(e.target) && e.target !== input) {
+        suggestionsBox.innerHTML = "";
+      }
+    });
+    function revealClue() {
+      if (gameEnded || currentClue >= clues.length) return;
+      const clueSlot = document.getElementById(`clue-${currentClue}`);
+      clueSlot.textContent = clues[currentClue];
+      clueSlot.classList.add("revealed");
+      currentClue++;
+      points--;
+      updateScore();
+    }
+    function submitGuess() {
+      if (gameEnded) return;
+      const userGuess = input.value.trim();
+      input.value = "";
+      submitButton.textContent = "Skip";
+      suggestionsBox.innerHTML = "";
+      if (userGuess.toLowerCase() === correctAnswer.toLowerCase()) {
+        gameEnded = true;
+        const message = currentClue === 0
+          ? "You've Beaten No Clue! 6 Points\nAnswer: " + correctAnswer
+          : `Correct! You scored ${points} point${points !== 1 ? 's' : ''}.\nAnswer: ${correctAnswer}`;
+        showModal(message);
+        removeInput();
+      } else {
+        if (currentClue < clues.length) {
+          revealClue();
+        } else {
+          endGame(false);
+        }
+      }
+    }
+    function endGame(success) {
+      gameEnded = true;
+      if (!success) {
+        showModal("Tough luck. The answer was: " + correctAnswer);
+        removeInput();
+      }
+    }
+    function updateScore() {
+      document.getElementById("score").textContent = `Points available: ${points}`;
+    }
+    function showModal(message) {
+      document.getElementById("result-message").textContent = message;
+      document.getElementById("result-modal").style.display = "flex";
+    }
+    function removeInput() {
+      document.getElementById("input-container").innerHTML = "";
+    }
+    document.getElementById("result-modal").addEventListener("click", () => {
+      document.getElementById("result-modal").style.display = "none";
+    });
+  </script>
+</body>
+</html>
