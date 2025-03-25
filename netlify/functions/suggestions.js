@@ -1,10 +1,9 @@
+
 const fs = require('fs');
 const path = require('path');
 
 exports.handler = async (event) => {
   const query = (event.queryStringParameters.q || '').toLowerCase();
-
-  // Load suggestions from the external file at build/runtime
   const filePath = path.resolve(__dirname, '../../data/suggestions.json');
   const raw = fs.readFileSync(filePath, 'utf-8');
   const suggestions = JSON.parse(raw);

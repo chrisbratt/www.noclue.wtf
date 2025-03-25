@@ -1,3 +1,4 @@
+
 body {
   font-family: 'Boldonse', sans-serif;
   text-align: center;
@@ -6,17 +7,14 @@ body {
   max-width: 500px;
   margin: auto;
 }
-
 h1 {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
-
 .quote {
   font-size: 1.25rem;
   margin-bottom: 2rem;
 }
-
 .clue-panel {
   background: #fff8cc;
   padding: 1rem;
@@ -24,14 +22,12 @@ h1 {
   min-height: 60px;
   margin-bottom: 1rem;
 }
-
 .clue-buttons {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-bottom: 1rem;
 }
-
 .clue-buttons button {
   width: 40px;
   height: 40px;
@@ -40,34 +36,26 @@ h1 {
   font-weight: bold;
   cursor: pointer;
 }
-
 .clue-buttons button.active {
   background: #4f46e5;
   color: white;
 }
-
 .clue-buttons button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
-
 .input-wrapper {
   position: relative;
   width: 100%;
 }
-
 input {
-    display: block;
-    padding: 0;
-    margin-bottom: 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    max-width: 100%;
-    width: 100%;
-    height: 44px;
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
 }
-
 #suggestions-list {
   position: absolute;
   top: 2.75rem;
@@ -85,30 +73,25 @@ input {
   padding: 0;
   margin: 0;
 }
-
 #suggestions-list li {
   padding: 8px;
   cursor: pointer;
 }
-
 #suggestions-list li:hover {
   background-color: #f0f0f0;
 }
-
 .guesses {
   margin: 1rem 0;
   font-size: 0.95rem;
   text-align: left;
 }
-
 .guesses span {
   display: block;
   margin: 0.25rem 0;
 }
-
 button.submit {
   width: 100%;
-  background: green;
+  background: #4f46e5;
   color: white;
   padding: 0.75rem;
   border: none;
@@ -116,7 +99,6 @@ button.submit {
   font-size: 1rem;
   cursor: pointer;
 }
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -129,7 +111,6 @@ button.submit {
   justify-content: center;
   z-index: 9999;
 }
-
 .modal {
   max-width: 90%;
   border: 4px solid;
@@ -138,17 +119,14 @@ button.submit {
   background: white;
   text-align: center;
 }
-
 .modal.green {
   border-color: #22c55e;
   background: #e7fbe9;
 }
-
 .modal.red {
   border-color: #ef4444;
   background: #fdeaea;
 }
-
 .modal button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
