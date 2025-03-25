@@ -2,254 +2,339 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>No Clue!</title>
-  <link href="https://fonts.googleapis.com/css2?family=Boldonse&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     body {
-      font-family: 'Roboto Mono', monospace;
-      background: linear-gradient(to right, #111, #1c1c1c);
-      color: #fff;
-      padding: 2rem;
-      display: flex;
-      flex-direction: row;
-      gap: 2rem;
-      justify-content: center;
-    }
-    .main-content {
-      flex: 1;
-      max-width: 600px;
-    }
-    .clue-panel {
-      width: 300px;
-    }
-    h1 {
       font-family: 'Boldonse', sans-serif;
-      font-size: 4rem;
-      margin-bottom: 2rem;
-      color: #f5c518;
       text-align: center;
-      text-shadow: 2px 2px #000;
+      padding: 2rem;
+      background: #fffbe7;
+      max-width: 500px;
+      margin: auto;
     }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
     .quote {
-      font-size: 1.8rem;
-      margin: 2rem auto 1rem;
-      font-style: italic;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
     }
-    .subtitle {
-      font-size: 1.3rem;
+
+    .clue-panel {
+      background: #fff8cc;
+      padding: 1rem;
+      border-radius: 8px;
+      min-height: 60px;
       margin-bottom: 1rem;
     }
-    .score {
-      font-size: 1.1rem;
+
+    .clue-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
       margin-bottom: 1rem;
-      color: #f5c518;
     }
-    .submit-button {
-      background-color: #f5c518;
-      border: none;
-      padding: 0.6rem 1rem;
-      font-size: 1rem;
+
+    .clue-buttons button {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
       font-weight: bold;
       cursor: pointer;
-      margin-left: 0.5rem;
-      transition: background 0.2s;
     }
-    .submit-button:hover {
-      background-color: #ffe670;
+
+    .clue-buttons button.active {
+      background: #4f46e5;
+      color: white;
     }
-    .clue-header {
-      font-size: 1.5rem;
-      font-family: 'Boldonse', sans-serif;
-      margin-bottom: 1rem;
-      text-align: center;
-      color: #f5c518;
-    }
-    .clue-slot {
-      background: #222;
-      border: 2px dashed #f5c518;
-      padding: 1rem;
-      margin: 0.5rem 0;
-      min-height: 2rem;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+
+    .clue-buttons button:disabled {
       opacity: 0.4;
-      transform: translateY(20px);
-      font-style: italic;
+      cursor: not-allowed;
     }
-    .clue-slot.revealed {
-      opacity: 1;
-      transform: translateY(0);
-      font-style: normal;
-    }
-    .input-container {
-      margin-top: 1rem;
+
+    .input-wrapper {
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      width: 100%;
     }
-    input[type="text"] {
-      width: 300px;
+
+    input {
+      width: 100%;
       padding: 0.5rem;
-      font-family: inherit;
+      margin-bottom: 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
     }
-    .autocomplete-suggestions {
+
+    #suggestions-list {
       position: absolute;
-      top: 100%;
+      top: 2.75rem;
       left: 0;
-      background: #222;
-      border: 1px solid #444;
+      width: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 0 0 4px 4px;
       max-height: 150px;
       overflow-y: auto;
-      width: 100%;
+      font-family: sans-serif;
       z-index: 1000;
-      text-align: left;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
-    .autocomplete-suggestion {
-      padding: 0.5rem;
+
+    #suggestions-list li {
+      padding: 8px;
       cursor: pointer;
     }
-    .autocomplete-suggestion:hover {
-      background: #333;
+
+    #suggestions-list li:hover {
+      background-color: #f0f0f0;
     }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.9);
-      justify-content: center;
-      align-items: center;
+
+    .guesses {
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+
+    .guesses span {
+      display: block;
+      margin: 0.25rem 0;
+    }
+
+    button.submit {
+      width: 100%;
+      background: #4f46e5;
       color: white;
-      font-size: 1.5rem;
-      z-index: 2000;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
     }
-    .modal-content {
-      background: #222;
-      padding: 2rem;
-      border-radius: 8px;
-      border: 2px solid #f5c518;
-      box-shadow: 0 0 20px #f5c518;
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal {
+      max-width: 90%;
+      border: 4px solid;
+      padding: 1rem;
+      border-radius: 10px;
+      background: white;
+      text-align: center;
+    }
+
+    .modal.green {
+      border-color: #22c55e;
+      background: #e7fbe9;
+    }
+
+    .modal.red {
+      border-color: #ef4444;
+      background: #fdeaea;
+    }
+
+    .modal button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #ddd;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="main-content">
-    <h1>No Clue!</h1>
-    <div class="quote" id="quote">"I'm gonna make him an offer he can't refuse."</div>
-    <div class="subtitle">What movie is this quote from?</div>
-    <div class="score" id="score">Points available: 6</div>
-    <div class="input-container" id="input-container">
-      <div style="position: relative;">
-        <input type="text" id="guess" placeholder="Type your guess..." autocomplete="off">
-        <div class="autocomplete-suggestions" id="suggestions"></div>
-      </div>
-      <button class="submit-button" id="submit-button" onclick="submitGuess()">Skip</button>
-    </div>
+
+  <h1>No Clue!</h1>
+  <div class="quote" id="quote"></div>
+
+  <div class="clue-panel" id="clue-panel">No clues yet!</div>
+
+  <div class="clue-buttons" id="clue-buttons"></div>
+
+  <div class="input-wrapper">
+    <input type="text" id="answer-input" placeholder="Guess the movie" autocomplete="off" />
+    <ul id="suggestions-list"></ul>
   </div>
-  <div class="clue-panel">
-    <div class="clue-header">Clues</div>
-    <div class="clue-slot" id="clue-0">Clue 1 will appear here...</div>
-    <div class="clue-slot" id="clue-1">Clue 2 will appear here...</div>
-    <div class="clue-slot" id="clue-2">Clue 3 will appear here...</div>
-    <div class="clue-slot" id="clue-3">Clue 4 will appear here...</div>
-    <div class="clue-slot" id="clue-4">Clue 5 will appear here...</div>
-  </div>
-  <div class="modal" id="result-modal">
-    <div class="modal-content" id="result-message"></div>
-  </div>
+  <button class="submit" onclick="submitAnswer()">Submit</button>
+
+  <div class="guesses" id="guess-history"></div>
+
+  <div id="modal-container"></div>
+
   <script>
-    const correctAnswer = "The Godfather";
-    const clues = [
-      "Released in the 1970s",
-      "Involves the Mafia",
-      "Stars Marlon Brando",
-      "Based on a novel by Mario Puzo",
-      "Directed by Francis Ford Coppola"
+    const questions = [
+      {
+        quote: "I'm going to make him an offer he can't refuse.",
+        clues: [
+          "Released in the 1970s",
+          "Features a powerful crime family",
+          "Directed by Francis Ford Coppola",
+          "Stars Marlon Brando",
+          "Iconic film about the mafia"
+        ],
+        answer: "The Godfather"
+      }
     ];
-    const allMovies = [
-      "The Godfather", "Pulp Fiction", "Goodfellas", "Scarface", "Casablanca",
-      "The Shawshank Redemption", "The Dark Knight", "Forrest Gump", "Fight Club",
-      "Inception", "The Matrix", "The Lord of the Rings", "Titanic", "Gladiator"
-    ];
-    let currentClue = 0;
-    let points = 6;
-    let gameEnded = false;
-    const input = document.getElementById("guess");
-    const suggestionsBox = document.getElementById("suggestions");
-    const submitButton = document.getElementById("submit-button");
-    input.addEventListener("input", () => {
-      const query = input.value.toLowerCase();
-      suggestionsBox.innerHTML = "";
-      submitButton.textContent = query ? "Submit" : "Skip";
-      if (!query) return;
-      const matches = allMovies.filter(movie => movie.toLowerCase().includes(query)).slice(0, 10);
-      matches.forEach(match => {
-        const div = document.createElement("div");
-        div.classList.add("autocomplete-suggestion");
-        div.textContent = match;
-        div.onclick = () => {
-          input.value = match;
-          submitButton.textContent = "Submit";
-          suggestionsBox.innerHTML = "";
-        };
-        suggestionsBox.appendChild(div);
+
+    let suggestions = [];
+
+    // Load suggestions from external file
+    fetch('suggestions.json')
+      .then(res => res.json())
+      .then(data => {
+        suggestions = data;
+      })
+      .catch(err => {
+        console.error('Failed to load suggestions:', err);
       });
-    });
-    document.addEventListener("click", (e) => {
-      if (!suggestionsBox.contains(e.target) && e.target !== input) {
-        suggestionsBox.innerHTML = "";
+
+    let current = questions[0];
+    let revealedClueCount = 0;
+    let activeClue = -1;
+    const quoteEl = document.getElementById('quote');
+    const cluePanel = document.getElementById('clue-panel');
+    const clueButtons = document.getElementById('clue-buttons');
+    const modalContainer = document.getElementById('modal-container');
+    const inputEl = document.getElementById('answer-input');
+    const suggestionsList = document.getElementById('suggestions-list');
+    const guessHistory = document.getElementById('guess-history');
+
+    function initQuiz() {
+      quoteEl.innerText = `"${current.quote}"`;
+      cluePanel.innerText = "No clues yet!";
+      clueButtons.innerHTML = "";
+      revealedClueCount = 0;
+      activeClue = -1;
+      inputEl.value = '';
+      modalContainer.innerHTML = '';
+      suggestionsList.innerHTML = '';
+      guessHistory.innerHTML = '';
+
+      for (let i = 0; i < 5; i++) {
+        const btn = document.createElement('button');
+        btn.innerText = i + 1;
+        btn.disabled = true;
+        btn.onclick = () => showClue(i);
+        clueButtons.appendChild(btn);
+      }
+    }
+
+    inputEl.addEventListener('input', () => {
+      const val = inputEl.value.toLowerCase();
+      suggestionsList.innerHTML = '';
+      if (val.length > 0) {
+        const filtered = suggestions.filter(s => s.toLowerCase().includes(val));
+        filtered.forEach(s => {
+          const li = document.createElement('li');
+          li.textContent = s;
+          li.onclick = () => {
+            inputEl.value = s;
+            suggestionsList.innerHTML = '';
+          };
+          suggestionsList.appendChild(li);
+        });
       }
     });
-    function revealClue() {
-      if (gameEnded || currentClue >= clues.length) return;
-      const clueSlot = document.getElementById(`clue-${currentClue}`);
-      clueSlot.textContent = clues[currentClue];
-      clueSlot.classList.add("revealed");
-      currentClue++;
-      points--;
-      updateScore();
+
+    function showClue(index) {
+      activeClue = index;
+      cluePanel.innerText = current.clues[index];
+      Array.from(clueButtons.children).forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
     }
-    function submitGuess() {
-      if (gameEnded) return;
-      const userGuess = input.value.trim();
-      input.value = "";
-      submitButton.textContent = "Skip";
-      suggestionsBox.innerHTML = "";
-      if (userGuess.toLowerCase() === correctAnswer.toLowerCase()) {
-        gameEnded = true;
-        const message = currentClue === 0
-          ? "You've Beaten No Clue! 6 Points\nAnswer: " + correctAnswer
-          : `Correct! You scored ${points} point${points !== 1 ? 's' : ''}.\nAnswer: ${correctAnswer}`;
-        showModal(message);
-        removeInput();
+
+    function revealNextClue() {
+      if (revealedClueCount < 5) {
+        clueButtons.children[revealedClueCount].disabled = false;
+        showClue(revealedClueCount);
+        revealedClueCount++;
       } else {
-        if (currentClue < clues.length) {
-          revealClue();
+        showFailure();
+      }
+    }
+
+    function submitAnswer() {
+      const guessRaw = inputEl.value.trim();
+      const guess = guessRaw.toLowerCase();
+      const correct = current.answer.toLowerCase();
+
+      inputEl.value = '';
+      suggestionsList.innerHTML = '';
+
+      if (!guess) {
+        revealNextClue();
+        return;
+      }
+
+      const resultEmoji = guess === correct ? '✅' : '❌';
+      const entry = document.createElement('span');
+      entry.textContent = `${resultEmoji} ${guessRaw}`;
+      guessHistory.appendChild(entry);
+
+      if (guess === correct) {
+        if (revealedClueCount === 0) {
+          showSuccess('You beat No Clue! 🎉');
         } else {
-          endGame(false);
+          showSuccess('Congrats! 🎉');
         }
+        confetti();
+      } else {
+        revealNextClue();
       }
     }
-    function endGame(success) {
-      gameEnded = true;
-      if (!success) {
-        showModal("Tough luck. The answer was: " + correctAnswer);
-        removeInput();
-      }
+
+    function showSuccess(msg) {
+      modalContainer.innerHTML = `
+        <div class="modal-overlay">
+          <div class="modal green">
+            <p>${msg} The answer was <strong>${current.answer}</strong></p>
+            <button onclick="closeModal()">Try Again</button>
+          </div>
+        </div>
+      `;
     }
-    function updateScore() {
-      document.getElementById("score").textContent = `Points available: ${points}`;
+
+    function showFailure() {
+      modalContainer.innerHTML = `
+        <div class="modal-overlay">
+          <div class="modal red">
+            <p>Oh no! You didn't get it. The answer was <strong>${current.answer}</strong></p>
+            <button onclick="closeModal()">Try Again</button>
+          </div>
+        </div>
+      `;
     }
-    function showModal(message) {
-      document.getElementById("result-message").textContent = message;
-      document.getElementById("result-modal").style.display = "flex";
+
+    function closeModal() {
+      modalContainer.innerHTML = '';
+      initQuiz();
     }
-    function removeInput() {
-      document.getElementById("input-container").innerHTML = "";
-    }
-    document.getElementById("result-modal").addEventListener("click", () => {
-      document.getElementById("result-modal").style.display = "none";
-    });
+
+    initQuiz();
   </script>
 </body>
 </html>
