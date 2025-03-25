@@ -2,4 +2,4 @@
   directory = "netlify/functions"
 
 [functions.suggestions]
-  included_files = ["netlify/functions/suggestions.json"] ✅
+  included_files = ["netlify/functions/suggestions.json"]
