@@ -1,10 +1,9 @@
 [build]
-  base = "www.noclue.wtf"
-  publish = "public"
+publish = "public"
 
 [functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
+directory = "netlify/functions"
+node_bundler = "esbuild"
 
 [[redirects]]
   from = "/*"
