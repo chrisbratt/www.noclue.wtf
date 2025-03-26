@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.handler = async (event, context) => {
     try {
-        const questionsPath = path.resolve(__dirname, 'get-question/questions.json');
+        const questionsPath = path.resolve(__dirname, 'questions.json');
         const questionsData = await fs.readFile(questionsPath, 'utf8');
         const questions = JSON.parse(questionsData);
 

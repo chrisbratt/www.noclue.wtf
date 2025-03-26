@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.handler = async (event, context) => {
     try {
-        const suggestionsPath = path.resolve(__dirname, 'get-suggestions/movie-suggestions.json');
+        const suggestionsPath = path.resolve(__dirname, 'movie-suggestions.json');
         const suggestionsData = await fs.readFile(suggestionsPath, 'utf8');
         const suggestions = JSON.parse(suggestionsData);
 
