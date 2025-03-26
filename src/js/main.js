@@ -1,6 +1,23 @@
 import { NoClueQuiz } from './components/Quiz.js';
 import { setupAutocomplete } from './autocomplete.js';
 
+// Debugging function to log fetch errors
+async function testDataFetching() {
+    try {
+        console.log('Testing question fetch...');
+        const questionResponse = await fetch('/.netlify/functions/get-question');
+        const questionData = await questionResponse.json();
+        console.log('Question data:', questionData);
+
+        console.log('Testing suggestions fetch...');
+        const suggestionsResponse = await fetch('/.netlify/functions/get-suggestions');
+        const suggestionsData = await suggestionsResponse.json();
+        console.log('Suggestions data:', suggestionsData);
+    } catch (error) {
+        console.error('Data fetching test failed:', error);
+    }
+}
+
 // Utility function to initialize the application
 function initializeApp() {
     // Check for required DOM elements
@@ -21,6 +38,9 @@ function initializeApp() {
         return;
     }
 
+    // Test data fetching before initializing
+    testDataFetching();
+
     // Initialize autocomplete
     setupAutocomplete();
 
@@ -32,23 +52,7 @@ function initializeApp() {
 function handleUnhandledErrors() {
     window.addEventListener('unhandledrejection', (event) => {
         console.error('Unhandled Promise Rejection:', event.reason);
-        // Optional: Show user-friendly error message
-        const errorModal = document.getElementById('error-modal');
-        if (errorModal) {
-            errorModal.textContent = 'An unexpected error occurred. Please try again.';
-            errorModal.style.display = 'block';
-        }
     });
-}
-
-// Performance monitoring
-function initPerformanceMonitoring() {
-    if ('performance' in window) {
-        window.addEventListener('load', () => {
-            const loadTime = window.performance.now();
-            console.log(`Page loaded in ${loadTime.toFixed(2)} milliseconds`);
-        });
-    }
 }
 
 // Entry point - run when DOM is fully loaded
@@ -56,24 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
         initializeApp();
         handleUnhandledErrors();
-        initPerformanceMonitoring();
     } catch (error) {
         console.error('Initialization error:', error);
     }
 });
-
-// Optional: Add service worker for offline support and performance
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-            .then(registration => {
-                console.log('Service Worker registered successfully:', registration.scope);
-            })
-            .catch(error => {
-                console.log('Service Worker registration failed:', error);
-            });
-    });
-}
 
 // Export for potential external use or testing
 export { initializeApp };

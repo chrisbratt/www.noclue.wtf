@@ -20,5 +20,16 @@
             "Starred Mark Hamill and Harrison Ford",
             "Revolutionary special effects for its time"
         ]
+    },
+    {
+        "quote": "Here's looking at you, kid.",
+        "answer": "Casablanca",
+        "clues": [
+            "Released in 1942",
+            "Classic black and white film",
+            "Starring Humphrey Bogart and Ingrid Bergman",
+            "Set during World War II",
+            "Won 3 Academy Awards including Best Picture"
+        ]
     }
 ]
