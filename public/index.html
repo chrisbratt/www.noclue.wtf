@@ -6,7 +6,26 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h1>No Clue!</h1>
+  <main id="app">
+    <h1>No Clue!</h1>
+    <blockquote id="movie-quote">Loading quote...</blockquote>
+    <div id="clue-buttons">
+      <button data-clue="0">Clue 1</button>
+      <button data-clue="1">Clue 2</button>
+      <button data-clue="2">Clue 3</button>
+      <button data-clue="3">Clue 4</button>
+      <button data-clue="4">Clue 5</button>
+    </div>
+    <input type="text" id="movie-guess" placeholder="Your guess..." />
+    <div class="buttons">
+      <button id="submit-btn">Submit</button>
+      <button id="skip-btn">Skip</button>
+    </div>
+    <div id="modal" hidden>
+      <p id="result-message"></p>
+      <button id="close-modal">Close</button>
+    </div>
+  </main>
   <script type="module" src="/src/js/main.js"></script>
 </body>
 </html>
