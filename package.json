@@ -1,0 +1,13 @@
+{
+    "name": "no-clue-quiz",
+    "version": "1.0.0",
+    "description": "Daily Movie Quote Quiz Game",
+    "scripts": {
+        "start": "netlify dev",
+        "build": "netlify build"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "netlify-cli": "^17.0.0"
+    }
+}

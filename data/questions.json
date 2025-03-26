@@ -1,0 +1,24 @@
+[
+    {
+        "quote": "I'm gonna make him an offer he can't refuse.",
+        "answer": "The Godfather",
+        "clues": [
+            "This movie was released in 1972",
+            "Directed by Francis Ford Coppola",
+            "Stars Marlon Brando and Al Pacino",
+            "Based on a novel by Mario Puzo",
+            "Won 3 Academy Awards including Best Picture"
+        ]
+    },
+    {
+        "quote": "May the Force be with you.",
+        "answer": "Star Wars",
+        "clues": [
+            "Released in 1977",
+            "First film in a groundbreaking franchise",
+            "Directed by George Lucas",
+            "Starred Mark Hamill and Harrison Ford",
+            "Revolutionary special effects for its time"
+        ]
+    }
+]

@@ -1,5 +1,11 @@
-[functions]
-  directory = "netlify/functions"
+[build]
+  functions = "netlify/functions"
+  publish = "public"
 
-[functions.suggestions]
-  included_files = ["netlify/functions/suggestions.json"]
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
