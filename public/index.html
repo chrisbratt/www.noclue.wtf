@@ -1,64 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Clue! Movie Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Boldonse&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>No Clue!</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 class="logo">No Clue!</h1>
-        </header>
-        
-        <main>
-            <section id="quiz-container">
-                <div id="quote-section">
-                    <blockquote id="movie-quote"></blockquote>
-                </div>
-                
-                <div id="clues-section">
-                    <div id="clue-display">
-                        <p id="current-clue"></p>
-                    </div>
-                    
-                    <div id="clue-buttons">
-                        <button class="clue-btn" data-clue="1" disabled>1</button>
-                        <button class="clue-btn" data-clue="2" disabled>2</button>
-                        <button class="clue-btn" data-clue="3" disabled>3</button>
-                        <button class="clue-btn" data-clue="4" disabled>4</button>
-                        <button class="clue-btn" data-clue="5" disabled>5</button>
-                    </div>
-                </div>
-                
-                <div id="guess-section">
-                    <input 
-                        type="text" 
-                        id="movie-guess" 
-                        placeholder="Type your movie guess..."
-                        autocomplete="off"
-                    >
-                    <div id="suggestions-dropdown"></div>
-                    
-                    <div id="action-buttons">
-                        <button id="submit-btn">Submit</button>
-                        <button id="skip-btn">Skip</button>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <h2 id="modal-title"></h2>
-            <p id="modal-message"></p>
-            <button id="modal-close">Close</button>
-        </div>
-    </div>
-
-    <script src="/src/js/main.js" type="module"></script>
+  <h1>No Clue!</h1>
+  <script type="module" src="/src/js/main.js"></script>
 </body>
 </html>
