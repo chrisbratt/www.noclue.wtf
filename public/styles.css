@@ -130,14 +130,13 @@ h1.logo {
   width: 100%;
 }
 
-.autocomplete-list {
+ul.autocomplete-list {
   position: absolute;
   bottom: 100%;
   left: 0;
   width: 100%;
   max-height: 160px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -145,12 +144,12 @@ h1.logo {
   background: #fff;
   color: black;
   border-radius: 8px;
-  z-index: 10;
+  z-index: 1000;
   font-family: 'Arial';
   z-index: 2000;
 }
 
-.autocomplete-list li {
+ul.autocomplete-list li {
   padding: 0.75rem;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
