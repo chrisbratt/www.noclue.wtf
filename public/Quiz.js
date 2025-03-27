@@ -2,6 +2,32 @@
 import confetti from "https://cdn.skypack.dev/canvas-confetti";
 
 export class NoClueQuiz {
+  renderCountdown() {
+    const container = document.getElementById("countdown");
+    if (!container) return;
+
+    const countdownText = document.createElement("p");
+    countdownText.className = "next-question-countdown";
+    container.innerHTML = "";
+    container.appendChild(countdownText);
+
+    const now = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(now.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const updateCountdown = () => {
+      const remaining = Math.max(0, tomorrow - new Date());
+      const hours = Math.floor(remaining / (1000 * 60 * 60));
+      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+      countdownText.textContent = `⏳ New question in ${hours}h ${minutes}m ${seconds}s`;
+    };
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
   constructor() {
     this.quoteEl = document.getElementById("movie-quote");
     this.clueEl = document.getElementById("current-clue");
@@ -22,32 +48,6 @@ export class NoClueQuiz {
     this.init();
   }
 
-  renderCountdown() {
-    const footer = document.createElement("p");
-    footer.id = "countdown";
-    footer.className = "next-question-countdown";
-
-    const now = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(now.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const updateCountdown = () => {
-      const remaining = Math.max(0, tomorrow - new Date());
-      const hours = Math.floor(remaining / (1000 * 60 * 60));
-      const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-      footer.textContent = `⏳ New question in ${hours}h ${minutes}m ${seconds}s`;
-    };
-
-    updateCountdown();
-    const target = document.getElementById("countdown");
-    if (target) target.replaceWith(footer);
-    else document.body.appendChild(footer);
-    setInterval(updateCountdown, 1000);
-  }
-
   disableGuessingUI() {
     if (this.guessInput && this.submitBtn) {
       this.guessInput.disabled = true;
@@ -58,14 +58,14 @@ export class NoClueQuiz {
       if (wrapper) {
         const msg = document.createElement("p");
         msg.className = "result-banner";
-        msg.innerHTML = this.incorrectGuesses.some(g => g.startsWith("✅"))
-          ? `🎉 You got it right!<br><small>The answer was ${this.currentQuestion.answer}</small>`
-          : `😢 Better luck next time.<br><small>The answer was ${this.currentQuestion.answer}</small>`;
+        msg.textContent = this.incorrectGuesses.some(g => g.startsWith("✅"))
+          ? "🎉 You got it right!"
+          : "😢 Better luck next time.";
         wrapper.replaceWith(msg);
       }
     }
+    this.saveState();
   }
-
 
   saveState() {
     const state = {
@@ -102,12 +102,11 @@ export class NoClueQuiz {
 
         this.updateIncorrectList();
 
-        // Disable UI if already completed
         const answeredCorrectly = this.incorrectGuesses.some(g => g.startsWith("✅"));
         const outOfClues = this.clueIndex >= this.currentQuestion.clues.length;
         if (answeredCorrectly || outOfClues) {
           this.disableGuessingUI();
-    this.renderCountdown();
+          this.renderCountdown();
         }
       }
     }
@@ -159,7 +158,7 @@ export class NoClueQuiz {
     if (!rawGuess) {
       this.incorrectGuesses.push("Skipped");
       this.updateIncorrectList();
-    this.saveState();
+      this.saveState();
       this.revealClue();
       return;
     }
@@ -189,7 +188,6 @@ export class NoClueQuiz {
       this.buttons[this.clueIndex].disabled = false;
       this.buttons[this.clueIndex].classList.add("revealed");
 
-      // Set current as active
       this.buttons.forEach(btn => btn.classList.remove("active"));
       this.buttons[this.clueIndex].classList.add("active");
 
@@ -231,15 +229,16 @@ export class NoClueQuiz {
     this.modalText.innerHTML = msg;
     this.modal.hidden = false;
     this.disableGuessingUI();
+    this.renderCountdown();
     this.saveState();
 
-    // Delay confetti to appear after modal and raise z-index
     setTimeout(() => confetti({ zIndex: 3000 }), 150);
   }
 
   triggerFailure() {
     this.disableGuessingUI();
     this.saveState();
+    this.renderCountdown();
     this.modal.classList.add("fail");
     this.modalText.innerHTML = `Oh no! Better luck next time.<br>The answer was ${this.currentQuestion.answer}`;
     this.modal.hidden = false;
