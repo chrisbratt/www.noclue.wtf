@@ -126,7 +126,7 @@ h1.logo {
   width: 100%;
 }
 
-.autocomplete-list {
+ul.autocomplete-list {
   position: absolute;
   bottom: 100%;
   left: 0;
@@ -145,7 +145,7 @@ h1.logo {
   z-index: 2000;
 }
 
-.autocomplete-list li {
+ul.autocomplete-list li {
   padding: 0.75rem;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
