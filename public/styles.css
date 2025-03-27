@@ -120,32 +120,49 @@ h1.logo {
 
 /* SUGGESTIONS */
 
-.guess-input-wrapper {
+.autocomplete-container {
+  position: relative; /* critical for absolute positioning */
   width: 100%;
-  position: relative;
 }
 
-.autocomplete-wrapper {
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon input {
+  flex: 1;
+  padding-left: 2rem;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+.search-icon {
   position: absolute;
-  bottom: 100%; /* Positions autocomplete above the input */
+  left: 0.5rem;
+  pointer-events: none;
+  font-size: 1.2rem;
+}
+
+ul.autocomplete-list {
+  position: absolute;
+  bottom: 100%; /* positions ABOVE input */
   left: 0;
   width: 100%;
-}
-
-ul.autocomplete-list {  
   max-height: 160px;
-  overflow-y: auto; /* auto is better for mobile scrolling */
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  text-align: left;
+  overflow-y: auto;
   background: #fff;
   color: black;
   border-radius: 8px;
-  font-family: 'Arial';
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+  list-style: none;
+  font-family: 'Arial', sans-serif;
   z-index: 2000;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1); /* improves visibility */
-  -webkit-overflow-scrolling: touch; /* smoother scrolling on iOS */
+  display: none; /* hidden initially */
+  -webkit-overflow-scrolling: touch;
 }
 
 ul.autocomplete-list li {
@@ -158,9 +175,10 @@ ul.autocomplete-list li:last-child {
   border-bottom: none;
 }
 
-.autocomplete-list li:hover {
+ul.autocomplete-list li:hover {
   background-color: #eee;
 }
+
 
 
 

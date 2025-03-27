@@ -21,11 +21,14 @@ export async function setupAutocomplete() {
     const value = input.value.toLowerCase();
     list.innerHTML = "";
 
-    if (!value) return;
+    if (!value) {
+      list.style.display = 'none';
+      return;
+    }
 
-    const matches = suggestions.filter(title =>
-      title.toLowerCase().includes(value)
-    );
+    const matches = suggestions
+      .filter(title => title.toLowerCase().includes(value))
+      .slice(0, 10); // Limit to top 10 matches
 
     matches.forEach(match => {
       const li = document.createElement("li");
@@ -33,12 +36,18 @@ export async function setupAutocomplete() {
       li.addEventListener("click", () => {
         input.value = match;
         list.innerHTML = "";
+        list.style.display = 'none';
       });
       list.appendChild(li);
     });
+
+    list.style.display = matches.length ? 'block' : 'none';
   });
 
   input.addEventListener("blur", () => {
-    setTimeout(() => (list.innerHTML = ""), 200);
+    setTimeout(() => {
+      list.innerHTML = "";
+      list.style.display = 'none';
+    }, 150);
   });
 }
