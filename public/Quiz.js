@@ -148,8 +148,8 @@ export class NoClueQuiz {
   updateSubmitButtonLabel() {
     if (!this.submitBtn || !this.guessInput) return;
     this.submitBtn.textContent = this.guessInput.value.trim()
-      ? "Submit guess"
-      : "Skip and reveal clue";
+      ? "Submit my guess"
+      : "Skip for a clue";
   }
 
   handleGuess() {
