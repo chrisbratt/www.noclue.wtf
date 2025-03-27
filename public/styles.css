@@ -118,7 +118,11 @@ h1.logo {
 }
 
 
-/* AUTOCOMPLETE */
+/* GUESS/SUGGESTIONS */
+
+.guess-input-wrapper {
+  width: 100%;
+}
 
 .autocomplete-wrapper {
   position: relative;
