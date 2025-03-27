@@ -1,31 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>No Clue!</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
   <main id="app">
-    <h1>No Clue!</h1>
-    <blockquote id="movie-quote">Loading quote...</blockquote>
-    <div id="clue-buttons">
-      <button data-clue="0">Clue 1</button>
-      <button data-clue="1">Clue 2</button>
-      <button data-clue="2">Clue 3</button>
-      <button data-clue="3">Clue 4</button>
-      <button data-clue="4">Clue 5</button>
+    <h1 class="logo">No Clue!</h1>
+
+    <div class="movie-quote-container">
+      <div id="movie-quote">
+        Loading quote...
+      </div>
     </div>
-    <input type="text" id="movie-guess" placeholder="Your guess..." />
+
+    <div id="clues">
+      <p id="current-clue">Clues will appear here</p>
+      <div id="clue-buttons">
+        <button data-clue="0" disabled>1</button>
+        <button data-clue="1" disabled>2</button>
+        <button data-clue="2" disabled>3</button>
+        <button data-clue="3" disabled>4</button>
+        <button data-clue="4" disabled>5</button>
+      </div>
+    </div>
+
+    <div class="autocomplete-wrapper">
+      <ul id="autocomplete-list" class="autocomplete-list"></ul>
+      <input type="text" id="movie-guess" placeholder="Your guess..." autocomplete="off" />
+    </div>
+
     <div class="buttons">
-      <button id="submit-btn">Submit</button>
-      <button id="skip-btn">Skip</button>
+      <button id="submit-btn">Submit guess</button>
     </div>
+
+    <div id="countdown"></div>
+
+    <ul id="guesses"></ul>
+
     <div id="modal" hidden>
-      <p id="result-message"></p>
-      <button id="close-modal">Close</button>
+      <div class="modal-content">
+        <p id="result-message"></p>
+        <button id="close-modal">Close</button>
+      </div>
     </div>
+    <div id="overlay"></div>
   </main>
-  <script type="module" src="/src/js/main.js"></script>
+
+  <script type="module" src="/main.js"></script>
 </body>
 </html>

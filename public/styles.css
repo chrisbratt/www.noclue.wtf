@@ -1,50 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Boldonse&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
-  font-family: sans-serif;
-  background-color: #111;
-  color: #fff;
+  font-family: "Work Sans", sans-serif;
+  background: rgb(9,9,121);
+  background: radial-gradient(circle, rgba(9,9,121,1) 13%, rgba(2,0,36,1) 100%);
+  color: #eee;
+  text-align: center;
+  margin: 0;
+  padding: 1rem;
+}
+
+#app {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
-h1 {
-  margin-bottom: 1rem;
+h1.logo {
+  font-family: 'Boldonse', sans-serif;
+  font-size: 2rem;
+  margin: 0;
+  color: #ffcc00;
+  text-shadow: 2px 2px #000;
+  transform: rotate(-2deg);
 }
 
-blockquote {
-  font-size: 1.5rem;
+.movie-quote-container {
+  font-size: 2rem;
   font-style: italic;
-  margin: 1rem 0;
-}
-
-#clue-buttons {
-  display: flex;
-  gap: 0.5rem;
+  background: #111;
+  height: 25vh;
+  color: #fff;
+  padding: 1rem;
+  margin: 2rem -1rem;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.movie-quote-container #movie-quote {
+  padding: 1rem;
 }
 
-input[type="text"] {
-  padding: 0.5rem;
+#clues {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+#current-clue {
+  border: 1px solid blue;
+  border-radius: .5rem;
   font-size: 1rem;
-  width: 250px;
-  margin-bottom: 1rem;
-}
-
-.buttons {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  padding: 1rem;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#current-clue.placeholder {
+  opacity: .5;
 }
 
-button {
+.slide-out {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-in {
+  transform: translateX(100%);
+  opacity: 0;
+  animation: slideIn 0.3s forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+#clue-buttons button {
+  margin: 0 0.25rem;
   padding: 0.5rem 1rem;
+  font-weight: bold;
   font-size: 1rem;
+  border-radius: 5px;
+  border: none;
+  background: #888;
+  color: #fff;
   cursor: pointer;
 }
 
+#clue-buttons button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+#clue-buttons button.revealed {
+  background: #ffcc00;
+  color: #000;
+}
+
+#clue-buttons button.active {
+  box-shadow: 0 0px 0px 4px #fff;
+}
+
+
+/* AUTOCOMPLETE */
+
+.autocomplete-wrapper {
+  position: relative;
+  display: flex;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.autocomplete-list {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 160px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+  background: #fff;
+  color: black;
+  border-radius: 8px;
+  z-index: 10;
+  font-family: 'Arial';
+}
+
+.autocomplete-list li {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+}
+
+.autocomplete-list li:hover {
+  background-color: #eee;
+}
+
+
+/* INPUT & BUTTONS */
+
+input[type="text"] {
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 2px solid #ffcc00;
+  width: 100%;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  background-color: #ffcc00;
+  color: #000;
+  cursor: pointer;
+}
+
+
+/* GUESSES */
+
+#guesses {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+  font-size: .8rem;
+  color: #ff8080;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-direction: column;
+  width: 100%;
+}
+
+#guesses li {
+  background: #330000;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+}
+
+
+/* MODAL */
+
 #modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #000;
+  border-radius: 12px;
+  border: 4px solid #0f0;
+  z-index: 1001;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#modal:not([hidden]) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modal .modal-content {
+  padding: 2rem;
+}
+
+#modal.fail {
+  border-color: red;
+}
+
+#modal button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#modal button:hover {
   background: #222;
-  padding: 1rem 2rem;
-  border: 1px solid #555;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+}
+
+#modal:not([hidden]) ~ #overlay {
+  display: block;
 }

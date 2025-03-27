@@ -1,24 +1,30 @@
-const path = require('path');
-const fs = require('fs').promises;
+const questions = require("./questions.json");
 
 exports.handler = async () => {
   try {
-    const questionsPath = path.resolve(__dirname, 'questions.json');
-    const data = await fs.readFile(questionsPath, 'utf8');
-    const questions = JSON.parse(data);
-    const today = Math.floor(Date.now() / (24 * 60 * 60 * 1000));
-    const questionIndex = today % questions.length;
-    const selectedQuestion = questions[questionIndex];
+    // Fixed starting date for index 0
+    const startDate = new Date("2025-03-26");
+    const today = new Date();
+
+    // Strip time from today so timezone doesn't affect calculation
+    today.setHours(0, 0, 0, 0);
+
+    const diffInDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+    const index = ((diffInDays % questions.length) + questions.length) % questions.length; // wrap safely
+
+    const todayQuestion = questions[index];
+
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify(selectedQuestion),
+      body: JSON.stringify(todayQuestion),
     };
   } catch (error) {
     return {
       statusCode: 500,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
-      body: JSON.stringify({ error: 'Failed to load question', details: error.message }),
+      body: JSON.stringify({
+        error: "Failed to load question",
+        details: error.message,
+      }),
     };
   }
 };

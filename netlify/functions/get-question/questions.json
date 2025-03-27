@@ -1,1 +1,58 @@
-[{"quote": "Here's looking at you, kid.", "clues": ["1940s", "Romantic", "Black and white", "WWII", "Classic"], "answer": "Casablanca"}]
+[
+    {
+      "quote": "I'm going to make him an offer he can't refuse.",
+      "clues": [
+        "Crime drama",
+        "1970s",
+        "Based on a novel",
+        "Directed by Francis Ford Coppola",
+        "Marlon Brando plays the Don"
+      ],
+      "answer": "The Godfather (1972)"
+    },
+    {
+      "quote": "Frankly, my dear, I don't give a damn.",
+      "clues": [
+        "1939 film",
+        "American Civil War setting",
+        "Romantic epic",
+        "Vivien Leigh stars",
+        "Scarlett O'Hara and Rhett Butler"
+      ],
+      "answer": "Gone with the Wind (1939)"
+    },
+    {
+      "quote": "Here's looking at you, kid.",
+      "clues": [
+        "1940s classic",
+        "World War II backdrop",
+        "Set in Morocco",
+        "Features a piano player named Sam",
+        "Humphrey Bogart and Ingrid Bergman"
+      ],
+      "answer": "Casablanca"
+    },
+    {
+      "quote": "Life finds a way.",
+      "clues": [
+        "1990s sci-fi",
+        "Dinosaurs",
+        "Directed by Steven Spielberg",
+        "Theme park gone wrong",
+        "Jeff Goldblum delivers the line"
+      ],
+      "answer": "Jurassic Park"
+    },
+    {
+      "quote": "Why so serious?",
+      "clues": [
+        "Comic book adaptation",
+        "2008",
+        "Heath Ledger won an Oscar",
+        "Set in Gotham",
+        "Batman faces The Joker"
+      ],
+      "answer": "The Dark Knight"
+    }
+  ]
+  
